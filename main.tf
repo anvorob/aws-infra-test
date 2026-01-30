@@ -14,7 +14,7 @@ terraform {
 }
 
 module "app_vpc" {
-  source = "git::https://github.com/anvorob/vpc_module_tf.git"
+  source = "git::git@github.com:anvorob/vpc_module_tf.git"
 
   cidr = "10.0.0.0/23"
   name = "production"
