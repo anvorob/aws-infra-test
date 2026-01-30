@@ -13,13 +13,21 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::836580018079:role/github_actions_access
+          aws-region: us-east-1
       - uses: hashicorp/setup-terraform@v3 
-
+      
+          
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
