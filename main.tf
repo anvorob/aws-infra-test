@@ -38,12 +38,13 @@ module "security_groups" {
   description = "Allows SSH outbound traffic to the private instance"
   vpc_id = module.app_vpc.vpc_id
   ingress_rules = {}
-    egress_rules = map(object({
+  egress_rules = {
+    rule_1 = {
       source_security_group_id = module.ec2_security_group.id
       from_port         = 22
       ip_protocol       = "tcp"
       to_port           = 22
-    }))
+    }}
 }
 
 
