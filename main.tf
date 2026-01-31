@@ -8,7 +8,6 @@ terraform {
     bucket         = "anvorob-terraform" 
     key            = "aws-infra/terraform.tfstate" 
     region         = "us-east-1"
-    
     encrypt        = true
   }
 }
@@ -24,27 +23,35 @@ module "app_vpc" {
     }
 }
 
+module "ec2_security_group"
+{
+  source = "git::git@github.com:anvorob/security_group_module_tf.git"
+  name = "MyPrivateSecurityGroup"
+  description = "MyPrivateSecurityGroup"
+  vpc_id = app_vpc.id
+}
+
 module "security_groups"
 {
-
+  source = "git::git@github.com:anvorob/security_group_module_tf.git"
   name = "ECICE"
   description = "Allows SSH outbound traffic to the private instance"
   vpc_id = app_vpc.id
   
     egress_rules = map(object({
-      source_security_group_id = ""
+      source_security_group_id = module.ec2_security_group.id
       from_port         = 22
       ip_protocol       = tcp
       to_port           = 22
     }))
 }
 
+
 module "ec2_instance" {
   source = "git::git@github.com:anvorob/ec2_module_tf.git"
-
-subnet_id = 
-key_name = 
-sg_list = []
-instance_type = "t2.micro"
-name = "Test instance"
+  subnet_id = module.app_vpc["int_a"].id
+  key_name = "EC2_test_key"
+  sg_list = [module.ec2_security_group.id]
+  instance_type = "t2.micro"
+  name = "Test instance"
 }
