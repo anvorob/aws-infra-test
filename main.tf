@@ -28,6 +28,8 @@ module "ec2_security_group" {
   name = "MyPrivateSecurityGroup"
   description = "MyPrivateSecurityGroup"
   vpc_id = app_vpc.id
+  ingress_rules = [{}]
+  egress_rules = [{}]
 }
 
 module "security_groups" {
@@ -35,7 +37,7 @@ module "security_groups" {
   name = "ECICE"
   description = "Allows SSH outbound traffic to the private instance"
   vpc_id = app_vpc.id
-  
+  ingress_rules = [{}]
     egress_rules = map(object({
       source_security_group_id = module.ec2_security_group.id
       from_port         = 22
