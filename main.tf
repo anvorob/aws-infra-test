@@ -23,16 +23,14 @@ module "app_vpc" {
     }
 }
 
-module "ec2_security_group"
-{
+module "ec2_security_group" {
   source = "git::git@github.com:anvorob/security_group_module_tf.git"
   name = "MyPrivateSecurityGroup"
   description = "MyPrivateSecurityGroup"
   vpc_id = app_vpc.id
 }
 
-module "security_groups"
-{
+module "security_groups" {
   source = "git::git@github.com:anvorob/security_group_module_tf.git"
   name = "ECICE"
   description = "Allows SSH outbound traffic to the private instance"
