@@ -41,7 +41,7 @@ module "security_groups" {
     egress_rules = map(object({
       source_security_group_id = module.ec2_security_group.id
       from_port         = 22
-      ip_protocol       = tcp
+      ip_protocol       = "tcp"
       to_port           = 22
     }))
 }
