@@ -53,6 +53,7 @@ module "ec2_instance" {
   key_name = "EC2_test_key"
   sg_list = [module.ec2_security_group.id]
   instance_type = "t2.micro"
+  ami_id = "ami-055a9df0c8c9f681c"
   name = "Test instance"
 }
 
