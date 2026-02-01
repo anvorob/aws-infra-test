@@ -18,7 +18,7 @@ module "app_vpc" {
   name = "production"
   subnets = {
     int_a = "10.0.0.0/24"
-    int_b = "10.0.1.0/24"
+    #int_b = "10.0.1.0/24"
     }
 }
 
@@ -31,7 +31,7 @@ module "ec2_security_group" {
   egress_rules = {}
 }
 
-module "security_groups" {
+module "ecice_security_group" {
   source = "git::git@github.com:anvorob/security_group_module_tf.git"
   name = "ECICE"
   description = "Allows SSH outbound traffic to the private instance"
@@ -54,4 +54,14 @@ module "ec2_instance" {
   sg_list = [module.ec2_security_group.id]
   instance_type = "t2.micro"
   name = "Test instance"
+}
+
+
+resource "aws_ec2_instance_connect_endpoint" "example" {
+  subnet_id          = module.app_vpc.subnet_objs["int_a"].id
+  security_group_ids = [module.ecice_security_group.id]
+
+  tags = {
+    Name = "my-eic-endpoint"
+  }
 }
