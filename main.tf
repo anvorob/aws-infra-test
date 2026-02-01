@@ -52,7 +52,7 @@ module "ec2_instance" {
   subnet_id = module.app_vpc.subnet_objs["int_a"].id
   key_name = "EC2_test_key"
   sg_list = [module.ec2_security_group.id]
-  instance_type = "t2.medium"
+  instance_type = "t2.micro"
   name = "Test instance"
 }
 
